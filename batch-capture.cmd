@@ -1,0 +1,1 @@
+@node batch-capture.js %*
