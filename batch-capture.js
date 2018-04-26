@@ -47,11 +47,11 @@ async function go(dir) {
 program
   .usage('[options] <directory>')
   .description('Capture a specific HTML element from each file. Start looking in <directory>, usually "."')
-  .option('-h --html <filename.html>', 'Name of HTML file to look for in each directory', 'index.html')
-  .option('-e --el <selector>', 'CSS selector for HTML element to grab', '#container')
-  .option('-o --output <filename.jpg>', 'Filename of image to capture', 'backup.jpg')
-  .option('-w --wait <sec>', 'Time to wait in seconds', parseFloat, 0.5)
-  .option('-q --quality <0-100>', 'JPG quality', parseFloat, 90)
+  .option('-h, --html <filename.html>', 'Name of HTML file to look for in each directory', 'index.html')
+  .option('-e, --el <selector>', 'CSS selector for HTML element to grab', '#container')
+  .option('-o, --output <filename.jpg>', 'Filename of image to capture', 'backup.jpg')
+  .option('-w, --wait <sec>', 'Time to wait in seconds', parseFloat, 0.5)
+  .option('-q, --quality <0-100>', 'JPG quality', parseFloat, 90)
   .parse(process.argv);
 
 if (!program.args.length)  {
