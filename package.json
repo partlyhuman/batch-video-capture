@@ -6,6 +6,9 @@
   "author": "Roger Braunstein",
   "license": "MIT",
   "private": true,
+  "bin": {
+    "batch-capture": "./bin/batch-capture"
+  },
   "dependencies": {
     "commander": "~2.15.1",
     "file-url": "~2.0.2",
