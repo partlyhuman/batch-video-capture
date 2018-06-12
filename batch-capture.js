@@ -4,9 +4,10 @@ const path = require('path');
 const shell = require('shelljs');
 const program = require('commander');
 const fileUrl = require('file-url');
-const phantomPath = require('phantomjs-prebuilt').path;
 const phantom = require('phantom');
-
+const phantomPath = require('phantomjs-prebuilt').path;
+const promisify = require('util').promisify;
+const im = require('gm').subClass({imageMagick: true});
 const MAX_VIEWPORT = {width: 1920, height: 1080};
 
 // Modernize setTimeout
@@ -15,6 +16,9 @@ function sleep(timeout) {
         setTimeout(resolve, timeout);
     })
 }
+
+// Make GM use promises
+im.prototype.write = promisify(im.prototype.write);
 
 async function renderPage(page, directory) {
     const uri = fileUrl(path.join(directory, program.index));
@@ -27,10 +31,16 @@ async function renderPage(page, directory) {
         return document.querySelector(selector).getBoundingClientRect();
     }, program.el);
     await page.property('clipRect', bounds);
-    const templateVars = Object.assign({folder: path.basename(directory)},  _.pick(program, ['quality','index','el','wait']));
+    const templateVars = Object.assign({folder: path.basename(directory)}, _.pick(program, ['quality', 'index', 'el', 'wait']));
     const outputFilename = path.join(directory, outputTemplate(templateVars));
     console.log(`Capturing to image ${outputFilename}`);
-    return await page.render(outputFilename, {format: 'jpeg', quality: program.quality});
+    await page.render(outputFilename, {format: 'png'});
+    await im(outputFilename)
+        .setFormat('jpeg')
+        .quality(100)
+        .define(`jpeg:extent=${parseInt(program.targetsize) * 1000}`)
+        .noProfile()
+        .write(outputFilename);
 }
 
 async function go(rootDir) {
@@ -55,9 +65,10 @@ program
     .option('-i, --index <filename.html>', 'Name of HTML file to look for in each directory', 'index.html')
     .option('-e, --el <selector>', 'CSS selector for HTML element to grab', '#container')
     .option('-o, --output <filename>', 'Output filename pattern, relative to the containing folder. You can use' +
-        'variables in this string such as {folder} for the folder name, and relative paths.', '../backup_{folder}.jpg')
+        'variables in this string such as {folder} for the folder name, and relative paths', '../backup_{folder}.jpg')
     .option('-w, --wait <sec>', 'Time to wait in seconds', parseFloat, 0.1)
-    .option('-q, --quality <0-100>', 'JPG quality', parseFloat, 90)
+    .option('-t, --targetsize <kb>', 'Output to an image with file size equal to the target size in kb', 35)
+    // .option('-q, --quality <0-100>', 'JPG quality', parseFloat, 100)
     .parse(process.argv);
 
 // Make a template function out of the passed template string, using single curly braces for variables
