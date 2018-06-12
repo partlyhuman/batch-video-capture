@@ -1,6 +1,6 @@
 {
   "name": "batch-capture",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Capture screenshots of a specific element in webpages in subdirectories",
   "main": "batch-capture.js",
   "author": "Roger Braunstein",
@@ -15,5 +15,8 @@
     "phantomjs-prebuilt": "~2.1.16",
     "phantom": "~4.0.12",
     "shelljs": "~0.8.1"
+  },
+  "engines": {
+    "node": "~10.0.0"
   }
 }
