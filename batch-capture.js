@@ -1,3 +1,4 @@
+const _ = require('lodash');
 const assert = require('assert');
 const path = require('path');
 const shell = require('shelljs');
@@ -15,11 +16,7 @@ function sleep(timeout) {
     })
 }
 
-function imageFilename(directory, imageDir) {
-    return path.join(imageDir, `${program.basename}_${path.basename(directory)}.jpg`);
-}
-
-async function renderPage(page, directory, imageDir) {
+async function renderPage(page, directory) {
     const uri = fileUrl(path.join(directory, program.index));
     console.log(`Loading ${uri}`);
     const status = await page.open(uri);
@@ -30,8 +27,10 @@ async function renderPage(page, directory, imageDir) {
         return document.querySelector(selector).getBoundingClientRect();
     }, program.el);
     await page.property('clipRect', bounds);
-    // console.log(imageFilename(directory, imageDir));
-    return await page.render(imageFilename(directory, imageDir), {format: 'jpeg', quality: program.quality});
+    const templateVars = Object.assign({folder: path.basename(directory)},  _.pick(program, ['quality','index','el','wait']));
+    const outputFilename = path.join(directory, outputTemplate(templateVars));
+    console.log(`Capturing to image ${outputFilename}`);
+    return await page.render(outputFilename, {format: 'jpeg', quality: program.quality});
 }
 
 async function go(rootDir) {
@@ -40,7 +39,7 @@ async function go(rootDir) {
         const page = await instance.createPage();
         for (const fn of shell.find(rootDir).filter(fn => path.basename(fn) === program.index)) {
             // console.log(path.dirname(fn));
-            await renderPage(page, path.dirname(fn), rootDir);
+            await renderPage(page, path.dirname(fn));
         }
     }
     finally {
@@ -55,10 +54,14 @@ program
     .description('Capture a specific HTML element from each file. Start looking in <directory>, usually "."')
     .option('-i, --index <filename.html>', 'Name of HTML file to look for in each directory', 'index.html')
     .option('-e, --el <selector>', 'CSS selector for HTML element to grab', '#container')
-    .option('-b, --basename <filename>', 'Prefix for name of image to capture. Folder name will be appended.', 'backup')
-    .option('-w, --wait <sec>', 'Time to wait in seconds', parseFloat, 0.5)
+    .option('-o, --output <filename>', 'Output filename pattern, relative to the containing folder. You can use' +
+        'variables in this string such as {folder} for the folder name, and relative paths.', '../backup_{folder}.jpg')
+    .option('-w, --wait <sec>', 'Time to wait in seconds', parseFloat, 0.1)
     .option('-q, --quality <0-100>', 'JPG quality', parseFloat, 90)
     .parse(process.argv);
+
+// Make a template function out of the passed template string, using single curly braces for variables
+const outputTemplate = _.template(program.output, {interpolate: /{([\s\S]+?)}/g});
 
 if (!program.args.length) {
     program.help();

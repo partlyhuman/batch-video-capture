@@ -12,9 +12,10 @@
   "dependencies": {
     "commander": "~2.15.1",
     "file-url": "~2.0.2",
-    "phantomjs-prebuilt": "~2.1.16",
     "phantom": "~4.0.12",
-    "shelljs": "~0.8.1"
+    "phantomjs-prebuilt": "~2.1.16",
+    "shelljs": "^0.8.2",
+    "lodash": "^4.17.10"
   },
   "engines": {
     "node": "~10.0.0"
