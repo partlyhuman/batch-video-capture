@@ -1,6 +1,6 @@
 {
   "name": "batch-capture",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Capture screenshots of a specific element in webpages in subdirectories",
   "main": "batch-capture.js",
   "author": "Roger Braunstein",
