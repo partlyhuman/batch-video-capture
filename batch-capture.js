@@ -7,7 +7,7 @@ const fileUrl = require('file-url');
 const phantom = require('phantom');
 const phantomPath = require('phantomjs-prebuilt').path;
 const promisify = require('util').promisify;
-const im = require('gm');
+const im = require('gm').subClass({imageMagick: true});
 const version = require('./package.json').version;
 const MAX_VIEWPORT = {width: 1920, height: 1080};
 
