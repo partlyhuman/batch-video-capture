@@ -8,6 +8,7 @@ const phantom = require('phantom');
 const phantomPath = require('phantomjs-prebuilt').path;
 const promisify = require('util').promisify;
 const im = require('gm').subClass({imageMagick: true});
+const version = require('./package.json').version;
 const MAX_VIEWPORT = {width: 1920, height: 1080};
 
 // Modernize setTimeout
@@ -60,6 +61,7 @@ async function go(rootDir) {
 
 
 program
+    .version(version)
     .usage('[options] <directory>')
     .description('Capture a specific HTML element from each file. Start looking in <directory>, usually "."')
     .option('-i, --index <filename.html>', 'Name of HTML file to look for in each directory', 'index.html')
