@@ -1,6 +1,6 @@
 {
   "name": "batch-capture",
-  "version": "1.0.5",
+  "version": "1.1.0",
   "description": "Capture screenshots of a specific element in webpages in subdirectories",
   "main": "batch-capture.js",
   "author": "Roger Braunstein",
@@ -12,11 +12,13 @@
   "dependencies": {
     "commander": "~2.15.1",
     "file-url": "~2.0.2",
+    "imagemin": "^7.0.1",
+    "imagemin-mozjpeg": "^8.0.0",
+    "imagemin-pngquant": "^8.0.0",
+    "lodash": "^4.17.15",
     "phantom": "~4.0.12",
     "phantomjs-prebuilt": "~2.1.16",
-    "shelljs": "^0.8.2",
-    "lodash": "^4.17.10",
-    "gm": "^1.23.1"
+    "shelljs": "^0.8.3"
   },
   "engines": {
     "node": "~10.0.0"
