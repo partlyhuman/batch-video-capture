@@ -1,5 +1,4 @@
 const _ = require('lodash');
-require('assert');
 const path = require('path');
 const shell = require('shelljs');
 const program = require('commander');
@@ -46,7 +45,7 @@ program
         '-o, --output <filename>',
         'Output filename pattern, relative to the containing folder. You can use ' +
         'variables in this string such as {folder} for the folder name, and any other option here. ',
-        '../backup_{folder}.mp4'
+        '../{folder}.mp4'
     )
     .option('--fps <fps>', 'FPS to record at', parseInt, 30)
     .option('--start <sec>', 'Time to wait in seconds before starting capture', parseFloat, 0.1)
