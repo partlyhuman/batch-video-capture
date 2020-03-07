@@ -1,8 +1,8 @@
 {
   "name": "batch-video-capture",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Capture videos of a specific element in webpages in subdirectories",
-  "main": "main.js",
+  "main": "batch-video-capture.js",
   "author": "Roger Braunstein",
   "license": "MIT",
   "private": true,

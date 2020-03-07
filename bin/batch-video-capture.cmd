@@ -1,1 +1,1 @@
-@node "%~dp0\\..\\main.js" %*
+@node "%~dp0\\..\\batch-video-capture.js" %*

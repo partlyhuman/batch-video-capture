@@ -19,8 +19,8 @@ async function go(rootDir) {
             inputOptions: ['-framerate', program.fps.toString()],
             outputOptions: ['-preset', 'medium', '-profile:v', 'high', '-tune', 'animation', '-crf', program.crf.toString()],
             pipeMode: false,
-            frameCache: path.join(path.dirname(output), 'frames'),
-            keepFrames: true,
+            // frameCache: path.join(path.dirname(output), 'frames'),
+            keepFrames: program.keep,
             roundToEvenHeight: true,
             roundToEvenWidth: true,
         };
@@ -47,13 +47,14 @@ program
         'variables in this string such as {folder} for the folder name, and any other option here. ',
         '../{folder}.mp4'
     )
-    .option('--fps <fps>', 'FPS to record at', parseInt, 30)
-    .option('--start <sec>', 'Time to wait in seconds before starting capture', parseFloat, 0.1)
+    .option('--fps <fps>', 'FPS to record at', parseFloat, 30)
+    .option('--start <sec>', 'Time to wait in seconds before starting capture', parseFloat, 0)
     .option('--duration <sec>', 'Duration to capture in seconds', parseFloat, 10)
     .option('--crf <0-51>', 'Set the Constant Rate Factor for H.264 quality. ' +
         'The range of the CRF scale is 0–51, where 0 is lossless, 23 is the default, and 51 is worst quality possible. ' +
         'A lower value generally leads to higher quality, and a subjectively sane range is 17–28. ' +
-        'Consider 17 or 18 to be visually lossless or nearly so.', parseInt, 18)
+        'Consider 17 or 18 to be visually lossless or nearly so.', parseFloat, 18)
+    .option('-k, --keep', 'Keep the frame images after encoding')
     .parse(process.argv);
 
 // Make a template function out of the passed template string, using single curly braces for
