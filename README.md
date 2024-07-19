@@ -10,7 +10,7 @@ in multiple subdirectories, and drop these shots in each directory.
 [FFmpeg](https://ffmpeg.org/download.html) must be installed and in your path.
 
 Run
- `npm install -g git:github.com/partlyhuman/batch-video-capture` 
+ `npm install -g git+https://github.com/partlyhuman/batch-video-capture` 
 from the command line.
 
 ### Usage
